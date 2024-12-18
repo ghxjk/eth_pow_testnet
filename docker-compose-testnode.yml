@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  test-node:
+    hostname: test-node2
+    image: eth_pow_testnet4-test-node2
+    container_name: eth_pow_testnet4-test-node2
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    command: >
+      geth 
+      --bootnodes="enode://749bac3705e7d0c92c27ace288d911cf2798538edcb46a3f9d058093c80c3533be6668df41ecb1174dd9cf22c39b6c5ed7e0f1aa53ef7928679b506f80b0268e@172.16.252.2:30303" 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28" 
+      --syncmode light  
+      --rpc.evmtimeout=60s
+      --http 
+      --http.api admin,personal,eth,net,web3,txpool,debug 
+      --http.corsdomain="*" 
+      --ws 
+      --ws.api eth,net,web3,txpool,debug  
+      --ws.origins="*" 
+      --metrics 
+      --maxpeers 100 
+      --allow-insecure-unlock
+      --txpool.globalqueue 10240  
+      --txpool.globalslots 51200
+      --verbosity 5
+
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.13
+
+
+networks:
+  priv-eth-net3:
+    external: true

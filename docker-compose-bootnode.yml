@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  mybootnode:
+    hostname: mybootnode
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    command: >
+      geth 
+      --nodekeyhex="37d571faed3af03f8302e1ddb940ca2f13010a1acf9443ba1507b93e5b36fcbd" 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28"
+      --verbosity 5
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.2
+
+
+networks:
+  priv-eth-net3:
+    driver: bridge
+    name: priv-eth-net3
+    ipam:
+      config:
+        - subnet: 172.16.252.0/28
+          gateway: 172.16.252.1

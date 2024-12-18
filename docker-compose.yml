@@ -1,0 +1,109 @@
+version: '3.7'
+
+services:
+  miner-1:
+    hostname: miner-1
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    command: >
+      geth 
+      --bootnodes="enode://749bac3705e7d0c92c27ace288d911cf2798538edcb46a3f9d058093c80c3533be6668df41ecb1174dd9cf22c39b6c5ed7e0f1aa53ef7928679b506f80b0268e@172.16.252.2:30303" 
+      --mine 
+      --miner.threads=1 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28"
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.3
+
+  miner-2:
+    hostname: miner-2
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    depends_on:
+      - miner-1
+    command: >
+      geth 
+      --bootnodes="enode://749bac3705e7d0c92c27ace288d911cf2798538edcb46a3f9d058093c80c3533be6668df41ecb1174dd9cf22c39b6c5ed7e0f1aa53ef7928679b506f80b0268e@172.16.252.2:30303" 
+      --mine 
+      --miner.threads=1 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28"
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.4
+
+  miner-3:
+    hostname: miner-3
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    depends_on:
+      - miner-2
+    command: >
+      geth 
+      --bootnodes="enode://749bac3705e7d0c92c27ace288d911cf2798538edcb46a3f9d058093c80c3533be6668df41ecb1174dd9cf22c39b6c5ed7e0f1aa53ef7928679b506f80b0268e@172.16.252.2:30303" 
+      --mine 
+      --miner.threads=1 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28"
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.5
+
+  miner-4:
+    hostname: miner-4
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    depends_on:
+      - miner-3
+    command: >
+      geth 
+      --bootnodes="enode://749bac3705e7d0c92c27ace288d911cf2798538edcb46a3f9d058093c80c3533be6668df41ecb1174dd9cf22c39b6c5ed7e0f1aa53ef7928679b506f80b0268e@172.16.252.2:30303" 
+      --mine 
+      --miner.threads=1 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28"
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.6
+
+  miner-5:
+    hostname: miner-5
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        - ACCOUNT_PASSWORD=${ACCOUNT_PASSWORD}
+    depends_on:
+      - miner-4
+    command: >
+      geth 
+      --bootnodes="enode://749bac3705e7d0c92c27ace288d911cf2798538edcb46a3f9d058093c80c3533be6668df41ecb1174dd9cf22c39b6c5ed7e0f1aa53ef7928679b506f80b0268e@172.16.252.2:30303" 
+      --mine 
+      --miner.threads=1 
+      --networkid=${NETWORK_ID} 
+      --netrestrict="172.16.252.0/28"
+    networks:
+      priv-eth-net3:
+        ipv4_address: 172.16.252.7
+
+networks:
+  priv-eth-net3:
+    external: true
